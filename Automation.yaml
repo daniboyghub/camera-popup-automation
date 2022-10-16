@@ -1,0 +1,243 @@
+alias: Fully Kiosk Camera Popup
+description: ""
+trigger:
+  - type: motion
+    platform: device
+    device_id: ae29d6be7c5f35117fcd81b21b09d4b7
+    entity_id: binary_sensor.babycam_motion
+    domain: binary_sensor
+    id: Babycam
+  - type: motion
+    platform: device
+    device_id: 1217bd7faeec5d0a8509338d93ca7f0d
+    entity_id: binary_sensor.catscam_motion
+    domain: binary_sensor
+    id: Catscam
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: Babycam
+        sequence:
+          - type: turn_on
+            device_id: 947959dc8c144d13034f15fe4b2f7cd6
+            entity_id: switch.lenovo_tab_m10_fhd_plus_screen
+            domain: switch
+          - service: browser_mod.popup
+            data:
+              content:
+                type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:vertical-stack-in-card
+                    mode: vertical
+                    cards:
+                      - type: custom:webrtc-camera
+                        entity: camera.babycam_hd
+                        poster: https://home-assistant.io/images/cast/splash.png
+                        intersection: 0.75
+                        muted: false
+                        ui: true
+                        shortcuts: null
+                        top: 0
+                        left: 0
+                        orientation: vertical
+                        services:
+                          - name: Record
+                            icon: mdi:record-circle-outline
+                            service: switch.toggle
+                            service_data:
+                              entity_id: switch.camera_record
+                              background: true
+                              ptz: true
+                              mse: false
+                              webrtc: false
+                      - type: custom:vertical-stack-in-card
+                        cards:
+                          - camera_view: live
+                            type: picture-glance
+                            entities:
+                              - entity: camera.babycam_sd
+                              - entity: input_boolean.onoff_privacy_baby
+                                tap_action:
+                                  action: toggle
+                              - entity: input_boolean.ptz_left
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.babycam_sd
+                                    pan: LEFT
+                              - entity: input_boolean.ptz_up
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.babycam_sd
+                                    tilt: UP
+                              - entity: input_boolean.ptz_down
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.babycam_sd
+                                    tilt: DOWN
+                              - entity: input_boolean.ptz_right
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.babycam_sd
+                                    pan: RIGHT
+                              - entity: binary_sensor.babycam_motion
+                            camera_image: camera.babycam
+                    view_layout:
+                      position: main
+                    card_mod:
+                      style: |
+                        ha-card {
+                        box-shadow: none;
+                        background: transparent;
+                        border-radius: 0;
+                        }
+                        ha-card {
+                          background-color: #111111;
+                          color: #e1e1e1;
+                          box-shadow: 0px 0px;
+                        }
+                style: |
+                  ha-card {
+                    text-align: center;
+                    background-color: #111111;
+                    color: #e1e1e1;
+                    box-shadow: 0px 0px;
+                  }
+              title: Kids Cam
+              size: wide
+              timeout: 60000
+            target:
+              device_id: a4e8fe2e105d27b44b25acdf101104c6
+          - service: browser_mod.navigate
+            data:
+              path: /lovelace-ogatodasbotasv2/Cameras
+            target:
+              device_id: a4e8fe2e105d27b44b25acdf101104c6
+      - conditions:
+          - condition: trigger
+            id: Catscam
+        sequence:
+          - type: turn_on
+            device_id: 947959dc8c144d13034f15fe4b2f7cd6
+            entity_id: switch.lenovo_tab_m10_fhd_plus_screen
+            domain: switch
+          - service: browser_mod.popup
+            data:
+              content:
+                type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:vertical-stack-in-card
+                    mode: vertical
+                    cards:
+                      - type: custom:webrtc-camera
+                        entity: camera.catscam_hd
+                        poster: https://home-assistant.io/images/cast/splash.png
+                        intersection: 0.75
+                        muted: false
+                        ui: true
+                        shortcuts: null
+                        top: 0
+                        left: 0
+                        orientation: vertical
+                        services:
+                          - name: Record
+                            icon: mdi:record-circle-outline
+                            service: switch.toggle
+                            service_data:
+                              entity_id: switch.camera_record
+                              background: true
+                              ptz: true
+                              mse: false
+                              webrtc: false
+                      - type: custom:vertical-stack-in-card
+                        cards:
+                          - camera_view: live
+                            type: picture-glance
+                            entities:
+                              - entity: camera.catscam_sd
+                              - entity: input_boolean.onoff_privacy
+                                tap_action:
+                                  action: toggle
+                              - entity: input_boolean.ptz_left
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.catscam_sd
+                                    pan: LEFT
+                              - entity: input_boolean.ptz_up
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.catscam_sd
+                                    tilt: UP
+                              - entity: input_boolean.ptz_down
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.catscam_sd
+                                    tilt: DOWN
+                              - entity: input_boolean.ptz_right
+                                tap_action:
+                                  action: call-service
+                                  service: tapo_control.ptz
+                                  service_data:
+                                    entity_id: camera.catscam_sd
+                                    pan: RIGHT
+                              - entity: binary_sensor.catscam_motion
+                            theme: ios-dark-mode-dark-green
+                            camera_image: camera.catscam
+                    view_layout:
+                      position: main
+                    card_mod:
+                      style: |
+                        ha-card {
+                        box-shadow: none;
+                        background: transparent;
+                        border-radius: 0;
+                        }
+                        ha-card {
+                          background-color: #111111;
+                          color: #e1e1e1;
+                          box-shadow: 0px 0px;
+                        }
+                style: |
+                  ha-card {
+                    text-align: center;
+                    background-color: #111111;
+                    color: #e1e1e1;
+                    box-shadow: 0px 0px;
+                  }
+              title: Kitchen Cam
+              size: wide
+              timeout: 60000
+            target:
+              device_id: a4e8fe2e105d27b44b25acdf101104c6
+          - service: browser_mod.navigate
+            data:
+              path: /lovelace-ogatodasbotasv2/Cameras
+            target:
+              device_id: a4e8fe2e105d27b44b25acdf101104c6
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: browser_mod.close_popup
+    data: {}
+  - type: turn_off
+    device_id: a4e8fe2e105d27b44b25acdf101104c6
+    entity_id: light.lenovo_tablet_screen
+    domain: light
+mode: restart
